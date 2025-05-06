@@ -266,30 +266,34 @@ const JobDescriptionAnalyzer = () => {
         cvText: cvText,
       };
 
-      console.log("-----------------");
-      console.log("FRONTEND: Sending data to backend:");
-      console.log(analysisData);
-      console.log("-----------------");
+      // console.log("-----------------");
+      // console.log("FRONTEND: Sending data to backend:");
+      // console.log(analysisData);
+      // console.log("-----------------");
 
 
-      const response = await fetch("http://localhost:5000/analyze", {
-        // Use your backend URL
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(analysisData),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/analyze`, // Use your backend URL
+        // "http://localhost:5000/analyze", // Use your backend URL
+        {
+          // Use your backend URL
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(analysisData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("-----------------");
-      console.log("FRONTEND: Received result from backend:");
-      console.log(result);
-      console.log("-----------------");
+      // console.log("-----------------");
+      // console.log("FRONTEND: Received result from backend:");
+      // console.log(result);
+      // console.log("-----------------");
       setAnalysisResult(result);
       // Clear the resume and cv text areas after successful analysis
       setResume("");
