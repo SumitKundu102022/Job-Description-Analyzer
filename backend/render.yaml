@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: flask-backend
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: FLASK_ENV
+        value: production
