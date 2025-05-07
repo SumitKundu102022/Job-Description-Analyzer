@@ -174,11 +174,11 @@ const extractTextFromFile = async (file: File): Promise<string> => {
       try {
         const arrayBuffer = reader.result as ArrayBuffer;
         let text = "";
-        console.log("File type:", file.type); // <---- ADD THIS LINE
+        // console.log("File type:", file.type); // <---- ADD THIS LINE
         if (file.type === "text/plain") {
           text = new TextDecoder().decode(arrayBuffer);
         } else if (file.type === "application/pdf") {
-          console.log("Processing as PDF"); // <---- ADD THIS LINE
+          // console.log("Processing as PDF"); // <---- ADD THIS LINE
           const pdfData = await pdfjsLib.getDocument(arrayBuffer).promise;
           let pdfText = "";
           for (let i = 1; i <= pdfData.numPages; i++) {
@@ -346,11 +346,11 @@ const JobDescriptionAnalyzer = () => {
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
     setText: React.Dispatch<React.SetStateAction<string>>
   ) => {
-    console.log("handleFileChange called");
-    console.log("e.target.files:", e.target.files);
+    // console.log("handleFileChange called");
+    // console.log("e.target.files:", e.target.files);
     const file = e.target.files?.[0];
     if (file) {
-      console.log("File selected:", file);
+      // console.log("File selected:", file);
 
       // Basic file type validation
       if (
@@ -375,7 +375,7 @@ const JobDescriptionAnalyzer = () => {
 
       setText(""); // Clear previous text *before* setting the file
       setFile(file);
-      console.log("File state updated:", file); // Log *after* setting state
+      // console.log("File state updated:", file); // Log *after* setting state
     }
   };
 
@@ -448,7 +448,7 @@ const JobDescriptionAnalyzer = () => {
                     id="resume-upload"
                     accept=".txt,.pdf,.doc,.docx"
                     onChange={(e) => {
-                      console.log("Resume input onChange triggered");
+                      // console.log("Resume input onChange triggered");
                       handleFileChange(e, setResumeFile, setResume);
                     }}
                     className="hidden"
@@ -457,7 +457,7 @@ const JobDescriptionAnalyzer = () => {
                   <label
                     htmlFor="resume-upload"
                     onClick={() => {
-                      console.log("Label clicked!");
+                      // console.log("Label clicked!");
                       resumeInputRef.current?.click();
                     }}
                   >
