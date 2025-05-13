@@ -1,15 +1,14 @@
-        <h1>Job Description Analyzer</h1>
+<h1>Job Description Analyzer</h1>
 
-        <div class="banner">
+<div class="banner">
            <img src="placeholder_image.png" alt="App Screenshot Banner">
-        </div>
+</div>
        
-        <p>
-            The Job Description Analyzer is a Python Flask application designed to analyze job descriptions and compare them against candidate resumes or CVs.
-            It extracts skills, categorizes them, and calculates a match percentage, highlighting matched and missing keywords.
-        </p>
+<p>
+    The Job Description Analyzer is a Python Flask application designed to analyze job descriptions and compare them against candidate resumes or CVs. It extracts skills, categorizes them, and calculates a match percentage, highlighting matched and missing keywords.
+</p>
 
-        <h2>Features</h2>
+<h2>Features</h2>
         <ul>
             <li><strong>Skill Extraction:</strong> Extracts skills from job descriptions and resumes/CVs.</li>
             <li><strong>Skill Categorization:</strong> Categorizes extracted skills (e.g., programming, technical, soft, management).</li>
@@ -19,7 +18,7 @@
             <li><strong>Web API:</strong> Flask-based API.</li>
         </ul>
 
-        <h2>Tech Stack</h2>
+<h2>Tech Stack</h2>
         <ul>
             <li><strong>Backend:</strong> Python</li>
             <li><strong>Framework:</strong> Flask</li>
@@ -28,7 +27,7 @@
             <li><strong>Deployment:</strong> Render</li>
         </ul>
 
-        <h2>Project Structure</h2>
+<h2>Project Structure</h2>
          <p>
             The core application logic is within <code>app.py</code>. Key functions:
         </p>
@@ -41,7 +40,7 @@
             <li><code>analyze()</code>: Flask route for analysis requests.</li>
         </ul>
 
-        <h2>Deployment</h2>
+<h2>Deployment</h2>
         <p>
             The application is deployed on Render.
         </p>
@@ -65,7 +64,7 @@
             <li><strong>Deploy:</strong> Render will build and deploy your Flask application.</li>
         </ol>
 
-        <h2>Improvements</h2>
+<h2>Improvements</h2>
         <ul>
             <li>Add a frontend.</li>
             <li>Fine-tune skill extraction with more sophisticated NLP.</li>
