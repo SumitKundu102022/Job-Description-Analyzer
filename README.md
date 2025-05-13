@@ -1,121 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Description Analyzer</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 960px;
-            margin: auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #1a5296; /* Darker blue */
-            text-align: center;
-            border-bottom: 2px solid #b0c4de;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        h2 {
-            color: #4169e1; /* Royal Blue */
-            margin-top: 30px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #b0c4de;
-            padding-bottom: 5px;
-        }
-        p {
-            margin-bottom: 15px;
-        }
-        ul, ol {
-            margin-bottom: 15px;
-        }
-        ul {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-        ol {
-            list-style-type: decimal;
-            padding-left: 20px;
-        }
+        <h1>Job Description Analyzer</h1>
 
-        /* Banner Image  */
-        .banner {
-            width: 100%;
-            height: 200px; /* Adjust as needed */
-            background-color: #b0c4de; /* Light Steel Blue, placeholder */
-            <!-- border-radius: 8px; -->
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            background-size: cover;  /* Ensure image covers the area */
-            background-position: center; /* Center the image */
-        }
-        .banner img{
-           max-width: 100%; /* Make sure image doesn't exceed container width */
-           max-height: 100%;
-           border-radius: 8px;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4169e1;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #1a5296;
-        }
-
-        .highlight {
-            background-color: #f0e68c; /* Khaki */
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-weight: bold;
-        }
-
-         /* Code Blocks  */
-        pre {
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin-bottom: 15px;
-            font-family: monospace;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        code {
-            font-family: monospace;
-            font-size: 14px;
-        }
-
-    </style>
-</head>
-<body>
-    <div class="container">
         <div class="banner">
            <img src="placeholder_image.png" alt="App Screenshot Banner">
         </div>
-        <h1>Job Description Analyzer</h1>
+       
         <p>
             The Job Description Analyzer is a Python Flask application designed to analyze job descriptions and compare them against candidate resumes or CVs.
             It extracts skills, categorizes them, and calculates a match percentage, highlighting matched and missing keywords.
@@ -183,6 +71,5 @@
             <li>Fine-tune skill extraction with more sophisticated NLP.</li>
             <li>Enhance to support more file formats.</li>
         </ul>
-    </div>
-</body>
-</html>
+    
+
