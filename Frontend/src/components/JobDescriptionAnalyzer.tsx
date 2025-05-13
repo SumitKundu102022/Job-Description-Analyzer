@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -20,12 +20,16 @@ import {
   Search,
   Zap,
   UploadCloud,
+  RefreshCcw,
+  X,
 } from "lucide-react"; // Added UploadCloud
 import { cn } from "../lib/utils";
 import { motion } from "framer-motion";
 import * as pdfjsLib from "pdfjs-dist"; // Import pdfjs
 //import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs";
 import * as mammoth from "mammoth";
+import { Toaster, toast } from "sonner"; // toast for feedback
+import { FiRefreshCcw } from "react-icons/fi";
 //import { extractTextFromFile, preprocessText, analyzeMatch } from './nlp'; // Import the functions  (adjust the path)
 
 // The key change is here:  Set the workerSrc directly to a string.
@@ -166,6 +170,13 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.vers
 //   },
 // };
 
+const RefreshIcon = FiRefreshCcw as unknown as React.FC<
+  React.SVGProps<SVGSVGElement>
+>;
+
+const capitalize = (str: string) =>
+  str.replace(/\b\w/g, (char) => char.toUpperCase());
+
 const extractTextFromFile = async (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -231,6 +242,11 @@ const JobDescriptionAnalyzer = () => {
   const [error, setError] = useState<string | null>(null);
   const resumeInputRef = useRef<HTMLInputElement>(null); // Ref for resume input
   // const cvInputRef = useRef<HTMLInputElement>(null); // Ref for cv input
+  const [feedbackSkill, setFeedbackSkill] = useState("");
+  const [feedbackCategory, setFeedbackCategory] = useState("technical_skills");
+  const [feedbackResponse, setFeedbackResponse] = useState<string | null>(null);
+  const [showCard, setShowCard] = useState(true);
+
 
   const handleAnalyze = useCallback(async () => {
     if (
@@ -271,7 +287,7 @@ const JobDescriptionAnalyzer = () => {
       // console.log(analysisData);
       // console.log("-----------------");
 
-
+      //console.log(`${process.env.REACT_APP_BACKEND_URL}/analyze`); // Log the URL for debugging
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/analyze`, // Use your backend URL
         // "http://localhost:5000/analyze", // Use your backend URL
@@ -379,6 +395,37 @@ const JobDescriptionAnalyzer = () => {
     }
   };
 
+  const handleFeedbackSubmit = async () => {
+    if (!feedbackSkill || !feedbackCategory) return;
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/feedback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            category: feedbackCategory,
+            skill: feedbackSkill,
+          }),
+        }
+      );
+      const result = await response.json();
+      if (response.ok) {
+        // setFeedbackResponse("Skill successfully submitted and updated.");
+        setFeedbackSkill("");
+        toast.success("Skill successfully submitted");
+      } else {
+        //setFeedbackResponse(result.error || "Failed to submit feedback.");
+        toast.error(result.error || "Failed to submit feedback");
+      }
+    } catch (err: any) {
+      //setFeedbackResponse(err.message);
+      toast.error("Error submitting feedback");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -388,6 +435,7 @@ const JobDescriptionAnalyzer = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
+          <Toaster richColors position="top-right" /> {/* Add this line */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             Job Description Analyzer
           </h1>
@@ -547,6 +595,26 @@ const JobDescriptionAnalyzer = () => {
                 </>
               )}
             </Button>
+
+            <Button
+              onClick={() => window.location.reload()}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3
+            hover:from-pink-600 hover:to-purple-600 transition-colors duration-300
+            disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <RefreshCcw className="animate-spin w-5 h-5" />
+                  Refreshing...
+                </>
+              ) : (
+                <>
+                  <RefreshIcon className="w-4 h-4" />
+                  Refresh
+                </>
+              )}
+            </Button>
           </motion.div>
 
           {/* Result Section */}
@@ -614,9 +682,10 @@ const JobDescriptionAnalyzer = () => {
                             key={index}
                             className="bg-green-500/20 text-green-400"
                           >
-                            {keyword}
+                            {capitalize(keyword)}
                           </Badge>
-                        ))}
+                        ))
+                      }
                     </div>
                   </div>
 
@@ -634,9 +703,10 @@ const JobDescriptionAnalyzer = () => {
                             key={index}
                             className="bg-red-500/20 text-red-400"
                           >
-                            {keyword}
+                            {capitalize(keyword)}
                           </Badge>
-                        ))}
+                        ))
+                      }
                     </div>
                   </div>
                 </CardContent>
@@ -655,6 +725,63 @@ const JobDescriptionAnalyzer = () => {
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
+        )}
+
+        {/* Feedback Card */}
+        {showCard && analysisResult && (
+          <div className="relative mt-8">
+            <button
+              onClick={() => setShowCard(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-xl font-bold"
+            >
+              <X/>
+            </button>
+            <Card className="bg-gray-800 border-gray-700 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-white text-lg">
+                  Improve Result Accuracy (Feedback)
+                </CardTitle>
+                <CardDescription className="text-gray-400">
+                  Help us improve by submitting a missing or matched skill.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Input
+                    placeholder="Enter skill (e.g., object oriented programming)"
+                    value={feedbackSkill}
+                    onChange={(e) => setFeedbackSkill(e.target.value)}
+                    className="bg-gray-700 text-white border-gray-600"
+                  />
+                  <select
+                    value={feedbackCategory}
+                    onChange={(e) => setFeedbackCategory(e.target.value)}
+                    className="bg-gray-700 text-white border border-gray-600 rounded px-3 py-2"
+                  >
+                    <option value="programming_skills">Programming</option>
+                    <option value="technical_skills">Technical</option>
+                    <option value="soft_skills">Soft Skills</option>
+                    <option value="management_skills">Management</option>
+                    <option value="alternative_technical_skills_groups">
+                      Alternative Group
+                    </option>
+                    <option value="skill_aliases">Skill Alias</option>
+                  </select>
+                </div>
+                <Button
+                  onClick={handleFeedbackSubmit}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Submit Feedback
+                </Button>
+                {feedbackResponse && (
+                  <p className="text-sm text-gray-300 mt-2">
+                    {feedbackResponse}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         )}
       </div>
     </div>
